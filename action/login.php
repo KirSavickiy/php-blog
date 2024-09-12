@@ -1,17 +1,17 @@
 <?php
 
-if (!isset($mysqli)) {
-    die('Error: $mysqli is not set.');
+if (!isset($pdo)) {
+    die('Error: $pdo is not set.');
 }
 $error = '';
 if (count($_POST) > 0) {
 
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
+    $result = $pdo->prepare("SELECT * FROM user WHERE email = :email");
+    $result->execute(['email' => $email]);
+    $user = $result->fetch(PDO::FETCH_ASSOC);
 
-    $result = $mysqli->query("SELECT * FROM user WHERE email = '". $email ."'");
-    
-    $user = $result->fetch_assoc();
     if ($user && password_verify($password, $user['password'])){
         $_SESSION['user_Id'] = $user['id'];
         header('Location: ?act=profile');

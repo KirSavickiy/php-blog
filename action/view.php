@@ -1,5 +1,9 @@
 <?php
 
 $id = $_GET['id'] ?? null;
-$post = $mysqli->query("SELECT * FROM article WHERE id = " . $id. ";")->fetch_assoc();
+$stmt = $pdo->prepare("SELECT * FROM article WHERE id = :id;");
+$stmt->execute([
+    'id' => $id
+]);
+$post= $stmt->fetch(PDO::FETCH_ASSOC);
 require_once('templates/view.php');

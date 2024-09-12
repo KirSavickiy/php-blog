@@ -2,26 +2,43 @@
 
 chekUser();
 
-$userID = $_SESSION['user_Id'];
+$userId = $_SESSION['user_Id'];
 $id = $_GET['id'] ?? null;
-$post = $mysqli->query("SELECT * FROM article WHERE id = " . $id. " AND userId = " . $userID." ;")->fetch_assoc();
-$errors = "";
 
-// $result = $mysqli->query("SELECT * FROM user WHERE id = '". $userID ."'");
-// $user = $result->fetch_assoc();
+$stmt = $pdo->prepare("SELECT * FROM article WHERE id = :id AND userId = :userId ;");
+$stmt->execute([
+    'id' => $id,
+    'userId' => $userId
+]);
+$post = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$errors = "";
 
 if (count($_POST)){
     $title = $_POST['title'] ?? null;
     $content = $_POST['content'] ?? null;
-    $path = $mysqli->query("SELECT img FROM article WHERE id = ". $id ."; ")->fetch_assoc();
+    $stmt = $pdo->prepare("SELECT img FROM article WHERE id = :id; ");
+    $stmt->execute(['id' => $id]);
+    $path = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $filePath = $path['img'];
     if ($filePath != null){
         deleteFile($filePath);
     }
-    $mysqli->query("UPDATE article SET img = NULL WHERE id = ". $id .";");
+
+    $pdo->prepare("UPDATE article SET img = NULL WHERE id = :id;")->execute([
+        'id' => $id
+    ]);
     $status = uploadImage();
     $errors = $status['status'];
-    $mysqli->query("UPDATE article SET title = '$title', content = '$content', img = '" . $status["path"]."' WHERE id = " . $id . " AND userId =  " . $userID . ";");
+    $img = $status["path"];
+    $stmt = $pdo->prepare("UPDATE article SET title = :title, content = :content, img = :img  WHERE id = :id AND userId =  :userId;");
+    $stmt->execute([
+        'title'=> $title,
+        'content'=> $content,
+        'img'=> $img,
+        'id' => $id,
+        'userId' => $userId
+    ]);
     if(empty($errors)){
         header('Location: /php-blog');
     die();

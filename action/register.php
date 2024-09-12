@@ -1,7 +1,7 @@
 <?php
 
-if (!isset($mysqli)) {
-    die('Error: $mysqli is not set.');
+if (!isset($pdo)) {
+    die('Error: $pdo is not set.');
 }
 
 if (count($_POST) > 0) {
@@ -11,7 +11,11 @@ if (count($_POST) > 0) {
     $confirm_password = $_POST['confirm_password'] ?? null;
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-    $mysqli->query("INSERT INTO user(email, password) VALUES ('" . $email . "','" . $password_hash . "');");
+    $stmt = $pdo->prepare("INSERT INTO user(email, password) VALUES (:email,:passwordhash);");
+    $stmt->execute([
+        'email' => $email,
+        'passwordhash' => $password_hash
+    ]);
 
     header('Location: ?act=login');
     die();

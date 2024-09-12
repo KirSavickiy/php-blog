@@ -8,15 +8,26 @@ session_start();
 require_once 'functions/helpers.php';
 require_once 'config.php';
 
-$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-$posts = $mysqli->query("SELECT * FROM article;")->fetch_all(MYSQLI_ASSOC);
+$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
 
-// $userID = $_SESSION['user_Id'];
-// $result = $mysqli->query("SELECT * FROM user WHERE id = '". $userID ."'");
-// $user = $result->fetch_assoc();
+$userID = $_SESSION['user_Id'] ?? null;
+try{
+    $pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
+} catch (PDOException $exeption){
+    echo $exeption->getMessage();
+}
+
+$sql_1 = "SELECT * FROM article;";
+$stmt_1 = $pdo->query($sql_1);
+$posts = $stmt_1->fetchAll(PDO::FETCH_ASSOC);
+if ($userID != null){
+    $sql_2 = "SELECT * FROM user WHERE id = '". $userID ."'";
+    $stmt_2 = $pdo->query($sql_2);
+    $user = $stmt_2->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
-if (isset($_GET['act'])) {
+if (isset($_REQUEST['act'])) {
     switch ($_GET['act']) {
 
         case 'register':

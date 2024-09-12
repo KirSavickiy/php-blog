@@ -2,9 +2,10 @@
 
 chekUser();
 
-$userID = $_SESSION['user_Id'];
-$result = $mysqli->query("SELECT * FROM user WHERE id = '". $userID ."'");
-$user = $result->fetch_assoc();
+$id = $_SESSION['user_Id'];
+$stmt = $pdo->prepare("SELECT * FROM user WHERE id = :id");
+$stmt->execute(['id' => $id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (count($_POST)){
 
@@ -12,8 +13,14 @@ if (count($_POST)){
     $surname = $_POST['surname'] ?? null;
     $phone = $_POST['phone'] ?? null;
     $about = $_POST['about'] ?? null;
-    
-    $mysqli->query("UPDATE user SET name = '" . $name ."', surname = '" . $surname ."', phone = '" . $phone ."', about = '" . $about ."' WHERE id = $userID ;");
+    $sql = "UPDATE user SET name = :name, surname = :surname, phone = :phone, about = :about WHERE id = :id ;";
+    $pdo->prepare($sql)->execute([
+        'name' => $name,
+        'surname' => $surname,
+        'phone' => $phone,
+        'about' => $about,
+        'id' => $id
+    ]);
     header('Location: ?act=profile');
     exit();
     

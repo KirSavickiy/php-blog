@@ -2,25 +2,28 @@
 
 chekUser();
 
-$userID = $_SESSION['user_Id'];
-
-// $result = $mysqli->query("SELECT * FROM user WHERE id = '". $userID ."'");
-// $user = $result->fetch_assoc();
+$userId = $_SESSION['user_Id'];
 
 if (count($_POST)) {
-
+    $status = uploadImage();
 
     $title = $_POST['title'] ?? null;
     $content = $_POST['content'] ?? null;
-    $status = uploadImage();
-    $path = $status["path"] ?? null;
-    $mysqli->query("INSERT INTO article SET userId = '$userID', title = '$title', content = '$content', img = '$path', createdAt = NOW();");
+    $img = $status["path"] ?? null;
+
+    $sql = "INSERT INTO article SET userId = :userId, title = :title, content = :content, img = :img, createdAt = NOW();";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'userId'=> $userId,
+        'title'=> $title,
+        'content'=> $content,
+        'img'=> $img
+    ]);
 
 
     header('Location: ?act=articles');
     die();
 
 }
-
 
 require_once('templates/add.php');
