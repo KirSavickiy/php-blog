@@ -27,11 +27,11 @@
     <main>
       <?php foreach ($posts as $post): ?>
         <article class="post-preview">
-          <img src="<?= $post['img']?>" alt="Изображение статьи 1">
+          <img class="img-main" src="<?= $post['img']?>" alt="Изображение статьи 1">
           <h3><a href="#"><?=htmlspecialchars($post['title']) ?></a></h3>
           <p>Краткое описание статьи 1...</p>
           <div class="post-buttons">
-            <a href="?act=view&id=<?php echo $post['id']?>" class="button-view">Смотреть</a>
+            <a href="?act=view&id=<?=$post['id']?>" class="button-view">Смотреть</a>
             <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
               <a href="?act=edit&id=<?php echo $post['id']?>" class="button-edit">Редактировать</a>
                 <?php endif; ?>

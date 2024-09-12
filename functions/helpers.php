@@ -19,7 +19,7 @@ function uploadImage(): array
 {
 
     $error = "";
-    $typeImage = ['image/png', 'image/jpg'];
+    $typeImage = ['image/png', 'image/jpg', 'image/jpeg'];
     $originalFileName = $_FILES['image']['name'];
     // Получение расширения файла
     $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
@@ -30,14 +30,15 @@ function uploadImage(): array
     }
 
     if (!in_array($_FILES['image']['type'], $typeImage)) {
-        $error = "This file is not Image";
+        $error = "Используйте файлы форматов img и png !";
     }
 
     $name = "images/" . md5(uniqid()) . '.' . $fileExtension;
 
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $name)) {
+    if (empty($error))  {
+        move_uploaded_file($_FILES['image']['tmp_name'], $name);
         return [
-            "status" => 'OK',
+            "status" => "",
             "path" => $name
         ];
     } else {

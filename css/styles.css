@@ -658,3 +658,33 @@ textarea {
 .button-back:hover {
     background-color: #5a6268;
 }
+.img-main {
+    width: 300px;
+    height: 200px;
+    object-fit: contain; /* Вписываем изображение в блок, сохраняя пропорции */
+    border: 1px solid #000; /* Видимая рамка */
+}
+
+.form-actions {
+    margin-bottom: 20px; /* Оставляем место под ошибками */
+}
+
+.form-errors {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid red;
+    background-color: #fdd;
+    color: red;
+    border-radius: 5px;
+    font-size: 16px; /* Устанавливаем размер шрифта */
+}
+
+.form-errors ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.form-errors li {
+    list-style-type: disc;
+}
+

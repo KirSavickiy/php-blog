@@ -11,6 +11,11 @@ require_once 'config.php';
 $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 $posts = $mysqli->query("SELECT * FROM article;")->fetch_all(MYSQLI_ASSOC);
 
+// $userID = $_SESSION['user_Id'];
+// $result = $mysqli->query("SELECT * FROM user WHERE id = '". $userID ."'");
+// $user = $result->fetch_assoc();
+
+
 if (isset($_GET['act'])) {
     switch ($_GET['act']) {
 
@@ -38,7 +43,11 @@ if (isset($_GET['act'])) {
         case 'view':
             require_once('action/view.php');
             break;
+        case 'logout':
+            require_once('action/logout.php');
+            break;
     }
     die();
 }
+
 require_once 'templates/main.php';

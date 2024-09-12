@@ -36,6 +36,17 @@
       </form>
     </div>
   </div>
+  <!-- Вывод ошибок -->
+  <?php if (!empty($errors)): ?>
+          <div class="form-errors">
+            <ul>
+                <li><?php echo htmlspecialchars($errors); ?></li>
+            </ul>
+          </div>
+        <?php endif; ?>
+      </form>
+    </div>
+  </div>
 
   <!-- Футер -->
   <?php require_once 'footer.php'; ?>
