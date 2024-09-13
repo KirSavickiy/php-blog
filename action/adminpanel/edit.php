@@ -1,18 +1,16 @@
 <?php
 
-chekUser();
+chekAdmin();
 
-$userId = $_SESSION['user_Id'];
 $id = $_GET['id'] ?? null;
 
-$stmt = $pdo->prepare("SELECT * FROM article WHERE id = :id AND userId = :userId ;");
+$stmt = $pdo->prepare("SELECT * FROM article WHERE id = :id;");
 $stmt->execute([
-    'id' => $id,
-    'userId' => $userId
+    'id' => $id
 ]);
 $post = $stmt->fetch(PDO::FETCH_ASSOC);
-
 $errors = "";
+
 
 if (count($_POST)){
     $title = $_POST['title'] ?? null;
@@ -25,25 +23,29 @@ if (count($_POST)){
         deleteFile($filePath);
     }
 
-    $pdo->prepare("UPDATE article SET img = NULL WHERE id = :id;")->execute([
+
+    $stmt_1 = $pdo->prepare("UPDATE article SET img = NULL WHERE id = :id;");
+    $stmt_1->execute([
         'id' => $id
     ]);
+    
+
     $status = uploadImage();
     $errors = $status['status'];
     $img = $status["path"];
-    $stmt = $pdo->prepare("UPDATE article SET title = :title, content = :content, img = :img  WHERE id = :id AND userId =  :userId;");
+    $stmt = $pdo->prepare("UPDATE article SET title = :title, content = :content, img = :img  WHERE id = :id;");
     $stmt->execute([
         'title'=> $title,
         'content'=> $content,
         'img'=> $img,
-        'id' => $id,
-        'userId' => $userId
+        'id' => $id
     ]);
+
     if(empty($errors)){
-        header('Location: /php-blog');
+        header('Location: /php-blog/?act=admin');
     die();
 }
     
 }
 
-require_once('templates/edit.php');
+require_once('templates/adminpanel/edit.php');

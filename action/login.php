@@ -13,6 +13,9 @@ if (count($_POST) > 0) {
     $user = $result->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password'])){
+        if ($user['is_admin'] == 1){
+            $_SESSION['role'] = 'admin';
+        }
         $_SESSION['user_Id'] = $user['id'];
         header('Location: ?act=profile');
         die();

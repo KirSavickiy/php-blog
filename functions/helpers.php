@@ -1,6 +1,5 @@
 <?php
 
-require_once 'config.php';
 
 function chekUser()
 {
@@ -9,6 +8,15 @@ function chekUser()
         die();
     }
 }
+
+function chekAdmin()
+{
+    if ($_SESSION['role'] != 'admin') {
+        header('Location: ?act=login');
+        die();
+    }
+}
+
 
 function getUserID(): int
 {

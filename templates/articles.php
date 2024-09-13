@@ -149,8 +149,8 @@
                     <th><?php echo $article['createdAt']; ?></th>
                     <td>
                         <div class="action-btns">
-                        <a href="?act=edit&id=<?php echo $article['id']?>" class="btn">Edit</a>
-                        <a href="?act=delete&id=<?php echo $article['id']?>" class="btn">Delete</a>
+                        <a href="?act=edit&id=<?=$article['id']?>" class="btn">Edit</a>
+                        <a href="?act=delete&id=<?=$article['id']?>" class="btn">Delete</a>
                         </div>
                     </td>
                 </tr>

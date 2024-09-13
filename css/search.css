@@ -1,0 +1,49 @@
+/* Основной контейнер поиска */
+aside section {
+    margin-bottom: 20px;
+  }
+  
+  /* Заголовок секции поиска */
+  aside section h3 {
+    font-size: 1.25em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Контейнер для поиска */
+  .search-container {
+    position: relative;
+  }
+  
+  /* Поле поиска */
+  .search-container input[type="text"] {
+    width: calc(100% - 40px); /* Учитываем ширину иконки */
+    padding: 10px 40px 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 1em;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+  }
+  
+  /* Иконка поиска */
+  .search-container::after {
+    content: '\f002'; /* Unicode для иконки поиска (Font Awesome) */
+    font-family: FontAwesome;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    color: #007bff;
+  }
+  
+  /* Эффект фокуса для поля поиска */
+  .search-container input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  

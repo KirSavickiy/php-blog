@@ -1,7 +1,7 @@
 /* Основные стили */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.7;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -612,12 +612,12 @@ textarea {
     color: #333;
 }
 
-.post-view img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
+.post-view img.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
 .post-content {
     font-size: 1.1em;
@@ -688,3 +688,144 @@ textarea {
     list-style-type: disc;
 }
 
+/* Эффект плавного перехода для интерактивных элементов */
+a, button {
+    transition: all 0.3s ease;
+}
+
+button:hover, a:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Тени для элементов */
+article, aside section, .auth-container, .post-container {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Градиент для фона шапки */
+header {
+    background: linear-gradient(90deg, #333, #555);
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header nav ul li a {
+    color: #fff;
+    font-size: 1.2em;
+}
+
+/* Мягкие тени для кнопок */
+button, .button-view, .button-edit, .button-save, .button-cancel {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Анимация при прокрутке */
+[data-aos] {
+    opacity: 0;
+    transition-property: opacity, transform;
+}
+
+[data-aos][data-aos].aos-animate {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+<style>
+  .comments-section {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .comment {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .comment-avatar {
+    margin-right: 10px;
+  }
+
+  .avatar {
+    width: 50px; /* Размер аватара */
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .comment-content {
+    flex: 1;
+  }
+
+  .comment-content strong {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .comment-content p {
+    margin: 0;
+  }
+
+  .comment-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+  .comment-form h3 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
+  }
+
+  .comment-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .comment-form input[type="text"],
+  .comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    font-size: 1em;
+  }
+
+  .comment-form input[type="text"]:focus,
+  .comment-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.25);
+  }
+
+  .comment-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .comment-form button:hover {
+    background-color: #0056b3;
+  }
+
+  .avatar {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+  

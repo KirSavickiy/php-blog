@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Блог</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 
 <body>
@@ -27,14 +30,14 @@
     <main>
       <?php foreach ($posts as $post): ?>
         <article class="post-preview">
-          <img class="img-main" src="<?= $post['img']?>" alt="Изображение статьи 1">
-          <h3><a href="#"><?=htmlspecialchars($post['title']) ?></a></h3>
+          <img class="img-main" src="<?= $post['img'] ?>" alt="Изображение статьи 1">
+          <h3><a href="#"><?= htmlspecialchars($post['title']) ?></a></h3>
           <p>Краткое описание статьи 1...</p>
           <div class="post-buttons">
-            <a href="?act=view&id=<?=$post['id']?>" class="button-view">Смотреть</a>
+            <a href="?act=view&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
             <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
-              <a href="?act=edit&id=<?php echo $post['id']?>" class="button-edit">Редактировать</a>
-                <?php endif; ?>
+              <a href="?act=edit&id=<?php echo $post['id'] ?>" class="button-edit">Редактировать</a>
+            <?php endif; ?>
           </div>
         </article>
       <?php endforeach; ?>
@@ -60,8 +63,11 @@
       </section>
       <section>
         <h3>Поиск</h3>
-        <input type="text" placeholder="Поиск по блогу...">
+        <div class="search-container">
+          <input type="text" placeholder="Поиск по блогу...">
+        </div>
       </section>
+
     </aside>
   </div>
 

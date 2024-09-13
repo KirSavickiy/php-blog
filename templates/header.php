@@ -8,9 +8,13 @@
                 <li><a href="#">Контакты</a></li>
             </ul>
             <ul class="auth-nav">
-                <li><a href="?act=profile" class="btn-profile">Мой профиль</a></li>
+
                 <?php if (!empty($_SESSION['user_Id'])): ?>
                     <li><a href="?act=logout" class="btn-login">Выход</a></li>
+                    <li><a href="?act=profile" class="btn-profile">Мой профиль</a></li>
+                    <?php if ($user['is_admin'] == 1 ): ?>
+                    <li><a href="?act=admin" class="btn-profile">Админ панель</a></li>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <?php if (empty($_SESSION['user_Id'])): ?>
                     <li><a href="?act=login" class="btn-login">Вход</a></li>
