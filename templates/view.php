@@ -35,32 +35,38 @@
       <!-- Форма для добавления комментария -->
       <div class="comments-section">
         <!-- Пример комментария -->
-        <div class="comment">
-          <div class="comment-avatar">
-            <img src="icons/avatar.jpg" alt="Аватар" class="avatar">
+        <?php foreach ($comments as $comment): ?>
+          <div class="comment">
+            <div class="comment-avatar">
+              <img src="icons/avatar.jpg" alt="Аватар" class="avatar">
+            </div>
+            <div class="comment-content">
+              <?php if (empty($comment['name'])): ?>
+                <strong>Без Имени</strong>   
+                <?php endif; ?>
+              <strong><?= $comment['name']?></strong>
+              <p><?= $comment['content']?></p>
+            </div>
           </div>
-          <div class="comment-content">
-            <strong>Имя автора</strong>
-            <p>Текст комментария...</p>
-          </div>
-        </div>
-
+        <?php endforeach; ?>
         <!-- Форма для добавления нового комментария -->
-        <div class="comment-form">
-          <h3>Оставить комментарий</h3>
-          <form action="comment.php" method="POST">
-
-            <label for="content">Комментарий:</label>
-            <textarea id="content" name="content" rows="4" required></textarea>
-
-            <button type="submit">Отправить</button>
-          </form>
-        </div>
+        <?php if (!empty($_SESSION['user_Id'])): ?>
+          <div class="comment-form">
+            <h3>Оставить комментарий</h3>
+            <form action="" method="POST">
+              <input type="hidden" name="act" value="comment" />
+              <label for="content">Комментарий:</label>
+              <textarea id="content" name="content" rows="4" required></textarea>
+              <button type="submit">Отправить</button>
+            </form>
+          </div>
       </div>
+    <?php else: ?>
+      <h3>Чтобы оставить комментарий войдите или зарегистрируйтесь</h3>
+    <?php endif; ?>
 
-
-      <!-- Футер -->
-      <?php require_once 'footer.php'; ?>
+    <!-- Футер -->
+    <?php require_once 'footer.php'; ?>
 </body>
 
 </html>

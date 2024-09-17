@@ -9,7 +9,8 @@ $routers = [
     'edit' => 'action/edit.php',
     'delete' => 'action/delete.php',
     'view' => 'action/view.php',
-    'logout' => 'action/logout.php'
+    'logout' => 'action/logout.php',
+    'comment' => 'action/comment.php'
 ];
 
 $adminrouters = [
