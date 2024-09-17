@@ -40,7 +40,7 @@
   <?php if (!empty($errors)): ?>
           <div class="form-errors">
             <ul>
-                <li><?php echo htmlspecialchars($errors); ?></li>
+                <li><?=htmlspecialchars($errors); ?></li>
             </ul>
           </div>
         <?php endif; ?>

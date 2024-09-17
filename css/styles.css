@@ -828,4 +828,15 @@ button, .button-view, .button-edit, .button-save, .button-cancel {
     border-radius: 50% !important;
     object-fit: cover !important;
   }
-  
+
+  img {
+    max-width: 100%; /* Изображение не будет шире контейнера */
+    height: auto; /* Высота автоматически адаптируется под ширину */
+    display: block; /* Убирает лишние отступы (особенно в некоторых браузерах) */
+}
+
+@media (max-width: 768px) {
+    img {
+        width: 100%; /* Растягиваем изображение на всю ширину экрана на мобильных устройствах */
+    }
+}

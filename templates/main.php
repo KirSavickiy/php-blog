@@ -30,7 +30,9 @@
     <main>
       <?php foreach ($posts as $post): ?>
         <article class="post-preview">
+         <?php  if (!empty($post['img'])): ?>
           <img class="img-main" src="<?= $post['img'] ?>" alt="Изображение статьи 1">
+          <?php endif ;?>
           <h3><a href="#"><?= htmlspecialchars($post['title']) ?></a></h3>
           <p>Краткое описание статьи 1...</p>
           <div class="post-buttons">

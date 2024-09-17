@@ -21,6 +21,7 @@ if (count($_POST)){
     $stmt->execute(['id' => $id]);
     $path = $stmt->fetch(PDO::FETCH_ASSOC);
     $filePath = $path['img'];
+
     if ($filePath != null){
         deleteFile($filePath);
     }
@@ -28,9 +29,10 @@ if (count($_POST)){
     $pdo->prepare("UPDATE article SET img = NULL WHERE id = :id;")->execute([
         'id' => $id
     ]);
+
     $status = uploadImage();
     $errors = $status['status'];
-    $img = $status["path"];
+    $img = $status["path"] ?? null;
     $stmt = $pdo->prepare("UPDATE article SET title = :title, content = :content, img = :img  WHERE id = :id AND userId =  :userId;");
     $stmt->execute([
         'title'=> $title,

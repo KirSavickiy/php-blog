@@ -17,7 +17,9 @@
     <div class="post-view">
       <article>
         <h1><?= htmlspecialchars($post['title']) ?></h1>
-        <img src="img/post-image.jpg" alt="Изображение поста">
+        <?php if (!empty($post['img'])):?>
+        <img src="<?= $post['img'] ?>" alt="Изображение поста"> 
+        <?php endif; ?>
         <div class="post-content">
           <p><?= htmlspecialchars($post['content']) ?></p>
         </div>

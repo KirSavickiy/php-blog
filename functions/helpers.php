@@ -31,19 +31,31 @@ function uploadImage(): array
     $originalFileName = $_FILES['image']['name'];
     // Получение расширения файла
     $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
+    $name = null;
     // Генерация уникального имени для файла с сохранением расширения
 
     if ($_FILES['image']['error'] != 0) {
         $error = "Error is" .  " . FILES['image']['error'] . ";
     }
 
-    if (!in_array($_FILES['image']['type'], $typeImage)) {
+    if (($_FILES['image']['name'] == "")) {
+        $error = "";
+        return [
+            "status" => "",
+            "path" => $name
+        ];
+    }
+
+    if ($_FILES['image']['size'] > 2000000){
+        $error = "Превышен максимальный вес изображения: 2 МБ";
+    }
+
+    if (!in_array($_FILES['image']['type'], $typeImage) && $_FILES['image']['name'] != "") {
         $error = "Используйте файлы форматов img и png !";
     }
 
-    $name = "images/" . md5(uniqid()) . '.' . $fileExtension;
-
     if (empty($error))  {
+        $name = "images/" . md5(uniqid()) . '.' . $fileExtension;
         move_uploaded_file($_FILES['image']['tmp_name'], $name);
         return [
             "status" => "",
