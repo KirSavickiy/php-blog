@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="css/styles-adminpanel.css">
     <title>Панель администратора</title>
 
-
-
     <div class="admin-header">
         Панель администратора
     </div>
@@ -22,3 +20,4 @@
                 <li><a href="#">Settings</a></li>
             </ul>
         </div>
+</head>

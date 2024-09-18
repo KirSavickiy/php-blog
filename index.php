@@ -8,6 +8,7 @@ session_start();
 require_once 'functions/helpers.php';
 require_once 'config/config.php';
 require_once 'routers/routers.php';
+require_once 'scripts/database.php';
 
 $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
 
@@ -20,6 +21,7 @@ try {
     echo $exeption->getMessage();
 }
 
+
 $sql_1 = "SELECT * FROM article;";
 $stmt_1 = $pdo->query($sql_1);
 $posts = $stmt_1->fetchAll(PDO::FETCH_ASSOC);
@@ -29,6 +31,7 @@ if ($userID != null) {
     $user = $stmt_2->fetch(PDO::FETCH_ASSOC);
 
 }
+
 
 if (isset($_REQUEST['act'])) {
     if (array_key_exists($_REQUEST['act'], $routers)){
@@ -44,5 +47,10 @@ if (isset($_REQUEST['act'])) {
        
    
 }
+
+// for ($i = 1; $i <= 50; $i++) {
+//      fillingArticles($pdo);
+// }
+//  exit;
 
 require_once 'templates/main.php';
