@@ -9,7 +9,7 @@ $endpage = ceil($count['total'] / 20);
 $pages = range(1, $endpage);
 
 
-if (($_GET['page'] >= 2) && ($_GET['page'] <= end($pages))) {
+if (isset($_GET['page']) && ($_GET['page'] >= 2) && ($_GET['page'] <= end($pages))) {
     $offset = (int) ($_GET['page'] * 20 - 20);
     $sql = "SELECT * FROM article ORDER BY createdAt DESC LIMIT 20 OFFSET :offset";
     $stmt = $pdo->prepare($sql);
@@ -21,17 +21,5 @@ if (($_GET['page'] >= 2) && ($_GET['page'] <= end($pages))) {
     $stmt = $pdo->query($sql);
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 require_once('templates/adminpanel/admin.php');

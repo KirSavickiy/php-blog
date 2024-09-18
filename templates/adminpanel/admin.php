@@ -29,7 +29,7 @@ require_once 'header.php';
          <!-- <?php  foreach ($pages as $page):?> -->
         <a href="?act=admin&page=<?=$page?>" class="page-link"><?=$page?></a>
             <?php endforeach; ?>
-             <?php if ($_GET['page'] < $endpage): ?>
+            <?php if (isset($_GET['page']) && $_GET['page'] < $endpage): ?>
         <a href="?act=admin&page=<?= ($_GET['page'] ?? 1) + 1; ?>" class="page-link">Следующая ›</a>
             <?php endif; ?>
         <a href="?act=admin&page=<?= end($pages); ?>" class="page-link">Последняя »</a>
