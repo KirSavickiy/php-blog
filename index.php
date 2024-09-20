@@ -48,7 +48,7 @@ if (isset($_REQUEST['act'])) {
    
 }
 
-// for ($i = 1; $i <= 50; $i++) {
+// for ($i = 1; $i <= 5000; $i++) {
 //      fillingArticles($pdo);
 // }
 //  exit;

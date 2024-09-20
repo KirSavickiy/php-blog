@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles-adminpanel.css">
     <title>Панель администратора</title>
-
+</head>
+<body>
     <div class="admin-header">
         Панель администратора
     </div>
-
     <div class="admin-container">
         <div class="sidebar">
             <ul>
@@ -20,4 +20,3 @@
                 <li><a href="#">Settings</a></li>
             </ul>
         </div>
-</head>
