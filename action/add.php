@@ -3,9 +3,7 @@
 chekUser();
 
 $userId = $_SESSION['user_Id'];
-$sql = "SELECT  id, title FROM category";
-$stmt = $pdo->query($sql);
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$categories = getAllCategories($pdo);
 
 
 if (count($_POST)) {

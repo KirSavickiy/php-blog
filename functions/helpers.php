@@ -46,7 +46,7 @@ function uploadImage(): array
         ];
     }
 
-    if ($_FILES['image']['size'] > 2000000){
+    if ($_FILES['image']['size'] > 2000000) {
         $error = "Превышен максимальный вес изображения: 2 МБ";
     }
 
@@ -54,7 +54,7 @@ function uploadImage(): array
         $error = "Используйте файлы форматов img и png !";
     }
 
-    if (empty($error))  {
+    if (empty($error)) {
         $name = "images/" . md5(uniqid()) . '.' . $fileExtension;
         move_uploaded_file($_FILES['image']['tmp_name'], $name);
         return [
@@ -69,7 +69,7 @@ function uploadImage(): array
     }
 }
 
-function deleteFile($filePath):bool
+function deleteFile($filePath): bool
 {
     // Проверяем, существует ли файл перед удалением
     if (file_exists($filePath)) {
@@ -81,5 +81,21 @@ function deleteFile($filePath):bool
         }
     } else {
         return false;
+    }
 }
+
+function getAllCategories($pdo): array
+{
+    $sql = "SELECT  id, title FROM category";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getArticleAuthor ($pdo, $userID): string {
+    $sql = "SELECT name, surname FROM user WHERE id = ? ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$userID]);
+    $author = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $author ? $author['name'] . ' ' . $author['surname'] : 'Unknown Author';
+
 }

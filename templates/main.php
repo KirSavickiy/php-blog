@@ -16,16 +16,6 @@
   <?php
   require_once 'header.php';
   ?>
-
-  <!-- Баннер -->
-  <!-- <section class="banner">
-        <div class="container">
-            <h2>Добро пожаловать в мой блог!</h2>
-            <p>Здесь вы найдете интересные статьи на различные темы.</p>
-        </div>
-    </section> -->
-
-  <!-- Основной контент -->
   <div class="container">
     <main>
       <?php foreach ($posts as $post): ?>
@@ -33,8 +23,11 @@
          <?php  if (!empty($post['img'])): ?>
           <img class="img-main" src="<?= $post['img'] ?>" alt="Изображение статьи 1">
           <?php endif ;?>
-          <h3><a href="#"><?= htmlspecialchars($post['title']) ?></a></h3>
-          <p>Краткое описание статьи 1...</p>
+          <h3><a href="?act=view&id=<?= $post['id'] ?>"><?= htmlspecialchars($post['title']) ?></a></h3>
+          <div class="post-meta">
+    <span class="post-date">Дата: <?= date('d.m.Y', strtotime($post['createdAt'])) ?></span> | 
+    <span class="post-author">Автор: <?= $post['author'] ?></span>
+  </div>
           <div class="post-buttons">
             <a href="?act=view&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
             <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
@@ -52,8 +45,9 @@
       <section>
         <h3>Категории</h3>
         <ul>
-          <li><a href="#">Категория 1</a></li>
-          <li><a href="#">Категория 2</a></li>
+          <?php foreach ($categories as $category):?>
+          <li><a href="#"><?=$category['title']?></a></li>
+          <?php endforeach; ?>
         </ul>
       </section>
       <section>

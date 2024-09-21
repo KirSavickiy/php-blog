@@ -10,6 +10,8 @@ require_once 'config/config.php';
 require_once 'routers/routers.php';
 require_once 'scripts/database.php';
 
+
+
 $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
 
 $userID = $_SESSION['user_Id'] ?? null;
@@ -21,10 +23,17 @@ try {
     echo $exeption->getMessage();
 }
 
+$categories = getAllCategories($pdo);
 
 $sql_1 = "SELECT * FROM article;";
 $stmt_1 = $pdo->query($sql_1);
 $posts = $stmt_1->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($posts as &$post){
+    $post['author'] = []; 
+    $post['author'] = getArticleAuthor($pdo, $post['userId']);
+}
+
 if ($userID != null) {
     $sql_2 = "SELECT * FROM user WHERE id = '" . $userID . "'";
     $stmt_2 = $pdo->query($sql_2);

@@ -840,3 +840,18 @@ button, .button-view, .button-edit, .button-save, .button-cancel {
         width: 100%; /* Растягиваем изображение на всю ширину экрана на мобильных устройствах */
     }
 }
+.post-meta {
+    font-size: 0.9em;
+    color: #666; /* Мягкий цвет для текста */
+    margin-bottom: 10px; /* Отступ снизу */
+  }
+  
+  .post-date, .post-author {
+    display: inline-block;
+  }
+  
+  .post-date::before, .post-author::before {
+    content: '';
+    margin-right: 5px; /* Отступ перед текстом */
+  }
+  
