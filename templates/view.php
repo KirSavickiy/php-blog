@@ -24,7 +24,7 @@
           <p><?= htmlspecialchars($post['content']) ?></p>
         </div>
         <div class="post-actions">
-          <a href="?act=edit&id=<?php echo $article['id'] ?>" class="button-edit">Редактировать пост</a>
+          <a href="?act=edit&id=<?=$article['id'] ?>" class="button-edit">Редактировать пост</a>
           <a href="/php-blog" class="button-back">Назад к списку</a>
         </div>
       </article>
@@ -46,8 +46,8 @@
               <?php if (empty($comment['name'])): ?>
                 <strong>Без Имени</strong>   
                 <?php endif; ?>
-              <strong><?= $comment['name']?></strong>
-              <p><?= $comment['content']?></p>
+              <strong><?= htmlentities($comment['name'])?></strong>
+              <p><?= htmlentities($comment['content'])?></p>
             </div>
           </div>
         <?php endforeach; ?>

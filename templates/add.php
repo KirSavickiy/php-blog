@@ -26,8 +26,11 @@
                     <label for="category">Категория</label>
                     <select id="category" name="category" required>
                         <option value="">Выберите категорию</option>
-                        <option value="Категория 1">Категория 1</option>
-                        <option value="Категория 2">Категория 2</option>
+                        <?php foreach ($categories as $category): ?>
+
+                        <option value="<?= $category['id'] ?>"> <?= $category['title'] ?> </option>
+
+                        <?php endforeach; ?>
                         <!-- Добавь больше категорий по необходимости -->
                     </select>
                 </div>
