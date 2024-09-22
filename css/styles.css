@@ -854,4 +854,45 @@ button, .button-view, .button-edit, .button-save, .button-cancel {
     content: '';
     margin-right: 5px; /* Отступ перед текстом */
   }
-  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #007bff;
+    padding: 10px 15px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    margin: 0 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .active {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}  
+.footer-pagination {
+    background-color: #f4f4f4; /* Цвет фона для футера с пагинацией */
+    padding: 20px 0; /* Отступы */
+}
+
+.footer-pagination .pagination {
+    display: flex;
+    justify-content: flex-start; /* Смещает содержимое влево */
+    margin: 0 auto; /* Центрирует контейнер, если ширина меньше 100% */
+    max-width: 800px; /* Максимальная ширина контейнера (по желанию) */
+}
+
+.footer-pagination .pagination a {
+    margin: 0 5px; /* Отступы между кнопками пагинации */
+}
