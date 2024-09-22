@@ -45,12 +45,13 @@
       <section>
         <h3>Категории</h3>
         <ul>
-          <?php foreach ($categories as $category):?>
-          <li><a href="#"><?=$category['title']?></a></li>
+
+          <?php foreach ($categories as &$category):?>
+          <li><a href="?act=category&id=<?=$category['id']?>&<?=$category['translit']?>"> <?=$category['title']?> </a></li>
           <?php endforeach; ?>
         </ul>
       </section>
-      <section>
+      <section> 
         <h3>Популярные посты</h3>
         <ul>
           <li><a href="#">Популярная статья 1</a></li>

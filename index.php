@@ -25,7 +25,14 @@ try {
 
 $categories = getAllCategories($pdo);
 
-$sql_1 = "SELECT * FROM article;";
+
+
+ foreach ($categories as &$category){
+    $category['translit'] = [];
+    $category['translit'] = transliterate($category['title'], 0);
+}
+
+$sql_1 = "SELECT * FROM article ORDER BY createdAt DESC LIMIT 10;";
 $stmt_1 = $pdo->query($sql_1);
 $posts = $stmt_1->fetchAll(PDO::FETCH_ASSOC);
 
@@ -38,7 +45,6 @@ if ($userID != null) {
     $sql_2 = "SELECT * FROM user WHERE id = '" . $userID . "'";
     $stmt_2 = $pdo->query($sql_2);
     $user = $stmt_2->fetch(PDO::FETCH_ASSOC);
-
 }
 
 
