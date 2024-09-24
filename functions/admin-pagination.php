@@ -1,11 +1,11 @@
 <?php
 
-$totalPages = count($pages);  // Общее количество страниц
-$currentPage = $_GET['page'] ?? 1;  // Текущая страница
-$startPage = max(1, $currentPage - 2);  // Начало диапазона страниц
-$endPage = min($totalPages, $currentPage + 2);  // Конец диапазона страниц
+$totalPages = count($pages);  
+$currentPage = $_GET['page'] ?? 1;  
+$startPage = max(1, $currentPage - 2);  
+$endPage = min($totalPages, $currentPage + 2);  
 
-// Отображаем кнопки предыдущей страницы
+
 if ($currentPage > 1) {
     echo '<a href="?act=admin&page=' . ($currentPage - 1) . '" class="page-link">‹ Предыдущая</a>';
 }
