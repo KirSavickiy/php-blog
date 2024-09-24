@@ -4,37 +4,20 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
+
 require_once 'config/config.php';
-
-$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-
-$userID = $_SESSION['user_Id'] ?? null;
-$user = null;
-
-try {
-    $pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
-} catch (PDOException $exeption) {
-    echo $exeption->getMessage();
-}
-
+require_once 'database/connection.php';
 require_once 'functions/helpers.php';
 require_once 'functions/pagination.php';
 require_once 'routers/routers.php';
-require_once 'scripts/database.php';
+// require_once 'scripts/database.php';
+$userID = $_SESSION['user_Id'] ?? null;
+$user = null;
 
 $categories = getAllCategories($pdo);
+$pages = getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $numberOfAllArticles);
+$posts = getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo);
 
-
-foreach ($posts as &$post){
-    $post['author'] = []; 
-    $post['author'] = getArticleAuthor($pdo, $post['userId']);
-}
-
-
- foreach ($categories as &$category){
-    $category['translit'] = [];
-    $category['translit'] = transliterate($category['title'], 0);
-}
 
 if ($userID != null) {
     $sql_2 = "SELECT * FROM user WHERE id = '" . $userID . "'";

@@ -1,6 +1,5 @@
 <header>
     <div class="container">
-        <h1 class="logo">Мой блог</h1>
         <nav>
             <ul class="main-nav">
                 <li><a href="/php-blog">Главная</a></li>

@@ -53,9 +53,9 @@
       <section>
         <h3>Категории</h3>
         <ul>
-          <?php foreach ($categories as &$category): ?>
+          <?php foreach($categories as &$category): ?>
             <li><a
-                href="?act=category&id=<?= $category['id'] ?>&<?= $category['translit'] ?>"><?= $category['title'] ?></a>
+                href="?act=category&id=<?=$category['id']?>&<?=$category['translit'] ?>"><?= $category['title'] ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
