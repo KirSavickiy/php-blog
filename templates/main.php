@@ -11,9 +11,9 @@
 </head>
 
 <body>
-  <!-- Шапка -->
+  <!-- Header -->
   <?php require_once 'header.php'; ?>
-  
+
   <div class="container">
     <main>
       <?php foreach ($posts as $post): ?>
@@ -23,17 +23,29 @@
           <?php endif; ?>
           <h3><a href="?act=view&id=<?= $post['id'] ?>"><?= htmlspecialchars($post['title']) ?></a></h3>
           <div class="post-meta">
-            <span class="post-date">Дата: <?= date('d.m.Y', strtotime($post['createdAt'])) ?></span> | 
+            <span class="post-date">Дата: <?= date('d.m.Y', strtotime($post['createdAt'])) ?></span> |
             <span class="post-author">Автор: <?= $post['author'] ?></span>
           </div>
           <div class="post-buttons">
             <a href="?act=view&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
             <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
-              <a href="?act=edit&id=<?php echo $post['id'] ?>" class="button-edit">Редактировать</a>
+              <a href="?act=edit&id=<?= $post['id'] ?>" class="button-edit">Редактировать</a>
             <?php endif; ?>
           </div>
         </article>
       <?php endforeach; ?>
+      <!-- Pagination -->
+      <div class="pagination">
+        <?php if (!empty($pages)): ?>
+          <a href="?act&page=1" class="page-link">&laquo Начало</a>
+          <?php foreach ($pages as $page): ?>
+            <a href="?act&page=<?= (int) $page ?>" class="page-link active"><?= $page ?></a>
+          <?php endforeach; ?>
+          <a href="?act&page=<?= $currentPage + 1 ?>" class="page-link">Следующая &raquo </a>
+        <?php endif; ?>
+
+      </div>
+
     </main>
 
     <!-- Боковая панель -->
@@ -42,12 +54,14 @@
         <h3>Категории</h3>
         <ul>
           <?php foreach ($categories as &$category): ?>
-            <li><a href="?act=category&id=<?= $category['id'] ?>&<?= $category['translit'] ?>"><?= $category['title'] ?></a></li>
+            <li><a
+                href="?act=category&id=<?= $category['id'] ?>&<?= $category['translit'] ?>"><?= $category['title'] ?></a>
+            </li>
           <?php endforeach; ?>
         </ul>
       </section>
 
-      <section> 
+      <section>
         <h3>Популярные посты</h3>
         <ul>
           <li><a href="#">Популярная статья 1</a></li>
@@ -68,4 +82,5 @@
 
   <?php require_once 'footer.php'; ?>
 </body>
+
 </html>

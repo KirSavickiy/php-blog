@@ -859,6 +859,7 @@ button, .button-view, .button-edit, .button-save, .button-cancel {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .pagination a {

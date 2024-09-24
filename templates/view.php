@@ -24,7 +24,9 @@
           <p><?= htmlspecialchars($post['content']) ?></p>
         </div>
         <div class="post-actions">
-          <a href="?act=edit&id=<?=$article['id'] ?>" class="button-edit">Редактировать пост</a>
+        <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
+          <a href="?act=edit&id=<?=$post['id'] ?>" class="button-edit">Редактировать пост</a>
+          <?php endif; ?>
           <a href="/php-blog" class="button-back">Назад к списку</a>
         </div>
       </article>

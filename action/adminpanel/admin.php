@@ -1,6 +1,7 @@
 <?php
 
 chekAdmin();
+
 $userId = $_SESSION['user_Id'];
 
 $stmt_2 = $pdo->query("SELECT COUNT(*) AS total FROM article;");
