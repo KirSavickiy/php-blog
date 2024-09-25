@@ -3,4 +3,5 @@ composer.phar
 .idea/
 composer.lock
 /images
-
+/lib
+.env

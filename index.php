@@ -5,18 +5,44 @@ ini_set('display_errors', 1);
 
 session_start();
 
+require 'vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 require_once 'config/config.php';
 require_once 'database/connection.php';
 require_once 'functions/helpers.php';
 require_once 'functions/pagination.php';
 require_once 'routers/routers.php';
-// require_once 'scripts/database.php';
-$userID = $_SESSION['user_Id'] ?? null;
+
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+
+
+
+$userID = getUserID();
 $user = null;
 
 $categories = getAllCategories($pdo);
 $pages = getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $numberOfAllArticles);
 $posts = getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo);
+
+$mail = new PHPMailer(true);
+$mail->CharSet = 'UTF-8';
+
+
+// $subject = 'Hello';
+// $text = "World";
+// $altbody = "Darova";
+// $adress = 'kirill.savickiy@yahoo.com';
+
+
+
+// // var_dump($posts);
+// // exit;
 
 
 if ($userID != null) {
@@ -25,20 +51,16 @@ if ($userID != null) {
     $user = $stmt_2->fetch(PDO::FETCH_ASSOC);
 }
 
+//Public Routes
+if (isset($_REQUEST['act']) && array_key_exists($_REQUEST['act'], $routers)) {
+    require_once($routers[$_REQUEST['act']]);
+    die();
+}
 
-if (isset($_REQUEST['act'])) {
-    if (array_key_exists($_REQUEST['act'], $routers)){
-        require_once($routers[$_REQUEST['act']]);
-        die();
-    }
-    if(isset($_SESSION['role'])){
-        if ((array_key_exists($_REQUEST['act'], $adminrouters)) && ($_SESSION['role'] == 'admin')) {
-            require_once($adminrouters[$_REQUEST['act']]);
-            die();
-        }
-    }
-       
-   
+// Admin Routes
+if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin' && array_key_exists($_REQUEST['act'], $adminrouters)) {
+    require_once($adminrouters[$_REQUEST['act']]);
+    die();
 }
 
 // for ($i = 1; $i <= 5000; $i++) {

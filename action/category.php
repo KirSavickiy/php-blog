@@ -1,7 +1,7 @@
  <?php
  
 $id = (int)$_GET['id'] ?? null;
-// $categoryArticles = getCategoryArticles($pdo, $id);
+$categoryArticles = getCategoryArticles($pdo, $id);
 
 
 
@@ -13,8 +13,7 @@ $id = (int)$_GET['id'] ?? null;
 
 // }
 if ($_GET['id']){
-    $posts = getArticlesCategory($posts, $id);
-    // $pages = getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $categoryArticles);
+    $posts = getArticlesCategory($id, $pdo);
 }
 
 require_once 'templates/main.php';

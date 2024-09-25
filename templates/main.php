@@ -44,6 +44,7 @@
           <a href="?act&page=<?= $currentPage + 1 ?>" class="page-link">Следующая &raquo </a>
         <?php endif; ?>
 
+
       </div>
 
     </main>
@@ -55,7 +56,7 @@
         <ul>
           <?php foreach($categories as &$category): ?>
             <li><a
-                href="?act=category&id=<?=$category['id']?>&<?=$category['translit'] ?>"><?= $category['title'] ?></a>
+                href="?act=category&id=<?=$category['id']?>&<?=$category['translit']?>"><?=$category['title']?></a>
             </li>
           <?php endforeach; ?>
         </ul>

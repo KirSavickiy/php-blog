@@ -17,6 +17,9 @@ if (count($_POST) > 0) {
         'passwordhash' => $password_hash
     ]);
 
+    $text = generateRegisterText($email, $password);
+    $sendEmail = sendEmail($mail, $text['subject'], $text['text'], $text['altbody'], $email);
+
     header('Location: ?act=login');
     die();
 }

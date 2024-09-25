@@ -1,5 +1,9 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 function transliterate($st, $rotate = false): string
 {
     $letters = array(
@@ -92,11 +96,14 @@ function chekAdmin()
         die();
     }
 }
-
-
-function getUserID(): int
+function getUserID():mixed
 {
-    return $_SESSION['user_Id'];
+    if (isset($_SESSION['user_Id'])){
+        return $_SESSION['user_Id'];
+    }
+    else{
+        return null;
+    }
 }
 
 function uploadImage(): array
@@ -172,19 +179,23 @@ function getAllCategories($pdo): array
     return $categories;
 }
 
-function getAllArticles($pdo): int {
+function getAllArticlesInt($pdo): int
+{
     $sql = "SELECT COUNT(*) FROM article;";
     $stmt = $pdo->query($sql);
     $articles = array_values($stmt->fetch(PDO::FETCH_ASSOC));
-    return (int)$articles[0];
+    return (int) $articles[0];
 }
 
-function getCategoryArticles($pdo, $categoryId): int{
+
+
+function getCategoryArticles($pdo, $categoryId): int
+{
     $sql = "SELECT COUNT(*) FROM article WHERE category_id = ?;";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$categoryId]);
     $articles = array_values($stmt->fetch(PDO::FETCH_ASSOC));
-    return (int)$articles[0];
+    return (int) $articles[0];
 }
 
 function getArticleAuthor($pdo, $userID): string
@@ -220,13 +231,17 @@ function getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo): arra
     return $posts ?? null;
 }
 
-function getArticlesCategory($articles, $categoryId): array
+function getArticlesCategory($categoryId, $pdo): array
 {
-    $filteredArticles = array_filter($articles, function ($article) use ($categoryId) {
-        return $article['category_id'] === $categoryId;
-    });
-
-    return $filteredArticles;
+    $sql = "SELECT * FROM article WHERE category_id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$categoryId]);
+    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($posts as &$post) {
+        $post['author'] = [];
+        $post['author'] = getArticleAuthor($pdo, $post['userId']);
+    }
+    return $posts;
 }
 
 function getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $numberOfAllArticles): array
@@ -259,4 +274,46 @@ function getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPagination
         }
     }
     return $pages;
+}
+
+function generateRegisterText($email, $password) :array{
+    $subject = 'Регистрация прошла успешно!';
+    $text = 'Спасибо за регистрацию! Ваш логин: ' . $email . ' Ваш пароль: ' . $password . '.';
+    $altbody = 'Спасибо за регистрацию! Ваш логин: ' . $email . ' Ваш пароль: ' . $password . '.';
+    return [
+        'subject' => $subject,
+        'text'=> $text,
+        'altbody'=> $altbody
+    ];
+}
+ 
+function sendEmail($mail, $subject, $body, $altbody, $adress): bool
+{
+    try {
+        //Server settings
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                  
+        $mail->isSMTP();
+        $mail->Host = $_ENV['MAIL_HOST'];;
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['MAIL_USERNAME'];
+        $mail->Password = $_ENV['MAIL_PASSWORD'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
+        //Recipients
+        $mail->setFrom($_ENV['MAIL_USERNAME']);
+        $mail->addAddress($adress);
+
+        //Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->AltBody = $altbody;
+
+        $mail->send();
+        echo 'Message has been sent';
+        return true;
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return false;
+    }
 }
