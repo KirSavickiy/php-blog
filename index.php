@@ -25,7 +25,6 @@ use PHPMailer\PHPMailer\Exception;
 
 $userID = getUserID();
 $user = null;
-
 $categories = getAllCategories($pdo);
 $pages = getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $numberOfAllArticles);
 $posts = getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo);

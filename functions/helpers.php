@@ -231,6 +231,7 @@ function getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo): arra
     return $posts ?? null;
 }
 
+
 function getArticlesCategory($categoryId, $pdo): array
 {
     $sql = "SELECT * FROM article WHERE category_id = ?";

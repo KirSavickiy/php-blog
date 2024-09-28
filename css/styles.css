@@ -897,3 +897,15 @@ button, .button-view, .button-edit, .button-save, .button-cancel {
 .footer-pagination .pagination a {
     margin: 0 5px; /* Отступы между кнопками пагинации */
 }
+.post-views {
+    font-size: 0.9rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+  
+  .post-views i {
+    margin-right: 5px;
+    font-size: 1.1rem;
+  }

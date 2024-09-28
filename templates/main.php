@@ -26,6 +26,10 @@
             <span class="post-date">Дата: <?= date('d.m.Y', strtotime($post['createdAt'])) ?></span> |
             <span class="post-author">Автор: <?= $post['author'] ?></span>
           </div>
+          <div class="post-views">
+    <i class="fas fa-eye"></i> <?= $post['view'] ?> просмотров
+  </div>
+
           <div class="post-buttons">
             <a href="?act=view&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
             <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
@@ -43,8 +47,6 @@
           <?php endforeach; ?>
           <a href="?act&page=<?= $currentPage + 1 ?>" class="page-link">Следующая &raquo </a>
         <?php endif; ?>
-
-
       </div>
 
     </main>
