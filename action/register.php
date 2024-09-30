@@ -5,7 +5,7 @@ if (!isset($pdo)) {
 }
 
 if (count($_POST) > 0) {
-
+    
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
     $confirm_password = $_POST['confirm_password'] ?? null;

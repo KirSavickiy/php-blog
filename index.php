@@ -3,7 +3,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-session_start();
+session_start([
+    'cookie_lifetime' => 86400,
+]);
+
 
 require 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -19,8 +22,6 @@ require_once 'routers/routers.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
-
 
 
 $userID = getUserID();
@@ -40,6 +41,7 @@ $mail->CharSet = 'UTF-8';
 
 
 
+
 // // var_dump($posts);
 // // exit;
 
@@ -51,13 +53,13 @@ if ($userID != null) {
 }
 
 //Public Routes
-if (isset($_REQUEST['act']) && array_key_exists($_REQUEST['act'], $routers)) {
+if ((isset($_REQUEST['act'])) && array_key_exists($_REQUEST['act'], $routers)) {
     require_once($routers[$_REQUEST['act']]);
     die();
 }
 
 // Admin Routes
-if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin' && array_key_exists($_REQUEST['act'], $adminrouters)) {
+if (isset($_SESSION['role']) && (isset($_REQUEST['act'])) && $_SESSION['role'] == 'admin' && array_key_exists($_REQUEST['act'], $adminrouters)) {
     require_once($adminrouters[$_REQUEST['act']]);
     die();
 }

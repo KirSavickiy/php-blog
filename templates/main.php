@@ -7,7 +7,22 @@
   <title>Блог</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/search.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .post-views, .post-likes {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .post-likes i {
+      cursor: pointer;
+    }
+
+    .liked {
+      color: red;
+    }
+  </style>
 </head>
 
 <body>
@@ -27,8 +42,15 @@
             <span class="post-author">Автор: <?= $post['author'] ?></span>
           </div>
           <div class="post-views">
-    <i class="fas fa-eye"></i> <?= $post['view'] ?> просмотров
-  </div>
+            <i class="fas fa-eye"></i> <?= $post['view'] ?> просмотров
+          </div>
+
+          <div class="post-likes">
+            <i class="fas fa-heart<?= $post['likes'] ? ' liked' : '' ?>" 
+               data-id="<?= $post['id'] ?>"
+               onclick="toggleLike(<?= $post['id'] ?>)"></i> 
+            <span id="like-count-<?= $post['id'] ?>"><?= $post['likes'] ?></span> лайков
+          </div>
 
           <div class="post-buttons">
             <a href="?act=view&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
@@ -48,7 +70,6 @@
           <a href="?act&page=<?= $currentPage + 1 ?>" class="page-link">Следующая &raquo </a>
         <?php endif; ?>
       </div>
-
     </main>
 
     <!-- Боковая панель -->
@@ -81,6 +102,21 @@
     </aside>
   </div>
 
+  <script>
+    function toggleLike(postId) {
+      const heartIcon = document.querySelector(`i[data-id='${postId}']`);
+      const likeCount = document.getElementById(`like-count-${postId}`);
+      
+      // Переключение состояния лайка
+      if (heartIcon.classList.contains('liked')) {
+        heartIcon.classList.remove('liked');
+        likeCount.textContent = parseInt(likeCount.textContent) - 1;
+      } else {
+        heartIcon.classList.add('liked');
+        likeCount.textContent = parseInt(likeCount.textContent) + 1;
+      }
+    }
+  </script>
 
 
   <?php require_once 'footer.php'; ?>

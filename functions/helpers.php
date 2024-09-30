@@ -287,6 +287,14 @@ function generateRegisterText($email, $password) :array{
         'altbody'=> $altbody
     ];
 }
+
+function updateViewArticle ($pdo, $id){
+    $sql = "UPDATE article SET view = view  + 1 WHERE id = :id;";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':id' => $id
+    ]);
+}
  
 function sendEmail($mail, $subject, $body, $altbody, $adress): bool
 {
