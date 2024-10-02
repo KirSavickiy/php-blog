@@ -96,12 +96,11 @@ function chekAdmin()
         die();
     }
 }
-function getUserID():mixed
+function getUserID(): mixed
 {
-    if (isset($_SESSION['user_Id'])){
+    if (isset($_SESSION['user_Id'])) {
         return $_SESSION['user_Id'];
-    }
-    else{
+    } else {
         return null;
     }
 }
@@ -207,7 +206,19 @@ function getArticleAuthor($pdo, $userID): string
     return $author ? $author['name'] . ' ' . $author['surname'] : 'Unknown Author';
 }
 
-function getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo): array
+function getLikeState($pdo, $articlesID, $userID = null) : bool
+{
+    if ($userID == null) {
+        return false;
+    }
+    $sql = "SELECT articleID FROM likes WHERE userID = ?";
+    $stmt = $pdo->prepare($sql);    
+    $stmt->execute([$userID]);
+    $likes = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+    return in_array($articlesID, $likes);
+}
+function getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo, $categoryID = null, $userID = null): array
 {
     if (isset($currentPage) && ($currentPage >= 2) && ($currentPage <= end($pages))) {
         $offset = (int) ($currentPage * $numberOfArticlesPerPage - $numberOfArticlesPerPage);
@@ -226,24 +237,23 @@ function getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo): arra
     }
     foreach ($posts as &$post) {
         $post['author'] = [];
+        $post['like'] = [];
+        $post['likeState'] = [];
         $post['author'] = getArticleAuthor($pdo, $post['userId']);
+        $post['like'] = getCountLikes($pdo, $post['id']);
+        $post['likeState'] = getLikeState($pdo, (int)$post['id'], $userID);
+        // error_log($post['likeState']);
     }
-    return $posts ?? null;
-}
 
 
-function getArticlesCategory($categoryId, $pdo): array
-{
-    $sql = "SELECT * FROM article WHERE category_id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$categoryId]);
-    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($posts as &$post) {
-        $post['author'] = [];
-        $post['author'] = getArticleAuthor($pdo, $post['userId']);
+    if ($categoryID === null) {
+        return $posts ?? null;
     }
-    return $posts;
+    return array_filter($posts, function ($post) use ($categoryID) {
+        return $post['category_id'] == $categoryID;
+    });
 }
+
 
 function getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $numberOfAllArticles): array
 {
@@ -277,42 +287,51 @@ function getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPagination
     return $pages;
 }
 
-function generateRegisterText($email, $password) :array{
+function generateRegisterText($email, $password): array
+{
     $subject = 'Регистрация прошла успешно!';
     $text = 'Спасибо за регистрацию! Ваш логин: ' . $email . ' Ваш пароль: ' . $password . '.';
     $altbody = 'Спасибо за регистрацию! Ваш логин: ' . $email . ' Ваш пароль: ' . $password . '.';
     return [
         'subject' => $subject,
-        'text'=> $text,
-        'altbody'=> $altbody
+        'text' => $text,
+        'altbody' => $altbody
     ];
 }
 
-function updateViewArticle ($pdo, $id){
+function updateViewArticle($pdo, $id)
+{
     $sql = "UPDATE article SET view = view  + 1 WHERE id = :id;";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':id' => $id
     ]);
 }
- 
+
+function getCountLikes($pdo, $articleID): int
+{
+    $sql = "SELECT COUNT(*) FROM likes WHERE articleID = ? ;";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$articleID]);
+    $count = array_values($stmt->fetch(PDO::FETCH_ASSOC));
+    return (int) $count[0];
+}
+
 function sendEmail($mail, $subject, $body, $altbody, $adress): bool
 {
     try {
-        //Server settings
-        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                  
         $mail->isSMTP();
-        $mail->Host = $_ENV['MAIL_HOST'];;
+        $mail->Host = $_ENV['MAIL_HOST'];
+        ;
         $mail->SMTPAuth = true;
         $mail->Username = $_ENV['MAIL_USERNAME'];
         $mail->Password = $_ENV['MAIL_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
-        //Recipients
+
         $mail->setFrom($_ENV['MAIL_USERNAME']);
         $mail->addAddress($adress);
 
-        //Content
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $body;

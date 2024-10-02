@@ -24,27 +24,19 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 
-$userID = getUserID();
+$userID = (int)getUserID();
 $user = null;
 $categories = getAllCategories($pdo);
 $pages = getAllPages($currentPage, $numberOfArticlesPerPage, $numberOfPaginationCells, $pdo, $numberOfAllArticles);
-$posts = getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo);
+$posts = getArticles($currentPage, $pages, $numberOfArticlesPerPage, $pdo, null, $userID);
+// $like = getLikeState($pdo, 0, $userID);
+// var_dump($posts);
+
+
+
 
 $mail = new PHPMailer(true);
 $mail->CharSet = 'UTF-8';
-
-
-// $subject = 'Hello';
-// $text = "World";
-// $altbody = "Darova";
-// $adress = 'kirill.savickiy@yahoo.com';
-
-
-
-
-// // var_dump($posts);
-// // exit;
-
 
 if ($userID != null) {
     $sql_2 = "SELECT * FROM user WHERE id = '" . $userID . "'";

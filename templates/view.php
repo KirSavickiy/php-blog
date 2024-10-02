@@ -27,7 +27,7 @@
         <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
           <a href="?act=edit&id=<?=$post['id'] ?>" class="button-edit">Редактировать пост</a>
           <?php endif; ?>
-          <a href="/php-blog" class="button-back">Назад к списку</a>
+          <a href="/php-blog/?act&page=<?=$currentPage?>" class="button-back">Назад к списку</a>
         </div>
       </article>
       <div class="comments-section">

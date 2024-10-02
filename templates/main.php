@@ -7,10 +7,10 @@
   <title>Блог</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/search.css">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .post-views, .post-likes {
+    .post-views,
+    .post-likes {
       display: inline-block;
       margin-right: 10px;
     }
@@ -29,6 +29,8 @@
   <!-- Header -->
   <?php require_once 'header.php'; ?>
 
+
+
   <div class="container">
     <main>
       <?php foreach ($posts as $post): ?>
@@ -46,14 +48,18 @@
           </div>
 
           <div class="post-likes">
-            <i class="fas fa-heart<?= $post['likes'] ? ' liked' : '' ?>" 
-               data-id="<?= $post['id'] ?>"
-               onclick="toggleLike(<?= $post['id'] ?>)"></i> 
-            <span id="like-count-<?= $post['id'] ?>"><?= $post['likes'] ?></span> лайков
+            <i class="fas fa-heart<?= $post['likeState'] ? ' liked' : '' ?>" data-id="<?= $post['id'] ?>"
+              onclick="toggleLike(<?= $post['id'] ?>, event)"></i>
+            <div id="error-message-<?= $post['id'] ?>"
+              style="display: none; position: absolute; background-color: red; color: white; padding: 10px; border-radius: 5px;">
+              Понравилась статья? Войдите в аккаунт, чтобы поставить отметку.
+            </div>
+            <span id="like-count-<?= $post['id'] ?>"><?= $post['like'] ?></span> лайков
           </div>
 
+
           <div class="post-buttons">
-            <a href="?act=view&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
+            <a href="?act=view&page=<?= $currentPage ?>&id=<?= $post['id'] ?>" class="button-view">Смотреть</a>
             <?php if (!empty($_SESSION['user_Id']) && $_SESSION['user_Id'] == $post['userId']): ?>
               <a href="?act=edit&id=<?= $post['id'] ?>" class="button-edit">Редактировать</a>
             <?php endif; ?>
@@ -77,9 +83,9 @@
       <section>
         <h3>Категории</h3>
         <ul>
-          <?php foreach($categories as &$category): ?>
+          <?php foreach ($categories as &$category): ?>
             <li><a
-                href="?act=category&id=<?=$category['id']?>&<?=$category['translit']?>"><?=$category['title']?></a>
+                href="?act=category&id=<?= $category['id'] ?>&<?= $category['translit'] ?>"><?= $category['title'] ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
@@ -101,25 +107,63 @@
       </section>
     </aside>
   </div>
-
-  <script>
-    function toggleLike(postId) {
-      const heartIcon = document.querySelector(`i[data-id='${postId}']`);
-      const likeCount = document.getElementById(`like-count-${postId}`);
-      
-      // Переключение состояния лайка
-      if (heartIcon.classList.contains('liked')) {
-        heartIcon.classList.remove('liked');
-        likeCount.textContent = parseInt(likeCount.textContent) - 1;
-      } else {
-        heartIcon.classList.add('liked');
-        likeCount.textContent = parseInt(likeCount.textContent) + 1;
-      }
-    }
-  </script>
-
-
   <?php require_once 'footer.php'; ?>
 </body>
+
+<script>
+function toggleLike(postId, event) {
+    const heartIcon = document.querySelector(`i[data-id='${postId}']`);
+    const likeCount = document.getElementById(`like-count-${postId}`);
+    const isLiked = heartIcon.classList.contains('liked');
+    const errorMessage = document.getElementById(`error-message-${postId}`);
+
+    fetch('action/like.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            post_id: postId,
+            liked: !isLiked  
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Сетевая ошибка');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            if (isLiked) {
+                heartIcon.classList.remove('liked');
+                likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
+            } else {
+                heartIcon.classList.add('liked');
+                likeCount.textContent = (parseInt(likeCount.textContent) + 1) || 1;
+            }
+            errorMessage.style.display = 'none'; 
+        } else {
+            console.error('Ошибка при обновлении лайка:', data.error);
+            showError(errorMessage);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        showError(errorMessage);
+    });
+}
+
+function showError(errorMessage) {
+    errorMessage.style.display = 'block';
+    setTimeout(() => {
+        errorMessage.style.display = 'none'; 
+    }, 3000);
+}
+
+
+</script>
+
+
 
 </html>
